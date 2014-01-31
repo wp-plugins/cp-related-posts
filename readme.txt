@@ -8,7 +8,7 @@ Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-CP Related Posts is a plugin that displays related articles on your website, manually, or by the terms in the content, title or abstract, including the tags assigned to the articles.
+CP Related Posts is a plugin that displays related articles on your website, manually, or by the terms in the content, title or abstract, and tags
 
 == Description ==
 
@@ -24,8 +24,10 @@ CP Related Posts offers a great versatility in displaying related posts. With CP
 **CP Related Posts features:**
 
 	> Allows select the number of related posts
-	> Allows extract the related terms from the articles titles, contents and abstracts
-	> Uses an automatic algorithm to determine the weight of relationship between posts
+	> Allows extract the related terms from the articles titles, contents 
+	  and abstracts
+	> Uses an automatic algorithm to determine the weight of relationship 
+	  between posts
 	> Allows associate posts manually (these are the most strong relationships)
 	> Allows define a threshold for relations between posts
      (Relations with a weight under the threshold are dismissed)
@@ -34,8 +36,8 @@ The base plugin, available for free, from the WordPress Plugin Directory, has al
 
 **Premium features:**
 
-	> Allows to use different layouts for related posts in multi-posts pages (like home page or archives)
-     and for single pages and posts
+	> Allows to use different layouts for related posts in multi-posts pages
+	  (like home page or archives) and for single pages and posts
 	> Allows to use different graphics to represent the level of similarity
 	> Allows to use related posts with custom post types
 
