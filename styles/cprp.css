@@ -1,0 +1,17 @@
+/*** COMMON TO ALL STYLES ***/
+.cprp_items{ display: none; }
+.cprp_thumbnail { width: 25%; margin: 5px 10px 5px 0; float: left; }
+.cprp_excerpt{ line-height:1.4em; }
+.cprp_tags {     
+	text-overflow: ellipsis;
+    overflow: hidden;
+    width: 100%;
+    white-space: nowrap;
+    word-wrap: normal;
+	font-size: 0.8em;
+ }
+
+/*** LIST STYLE ***/
+.cprp_items.list ul { margin: 0; padding: 0; list-style-type: none; }
+.cprp_items.list li { clear: both; margin-bottom:15px; }
+.cprp_items.list .cprp_tags { background: #EFEFEF; padding: 5px; }
