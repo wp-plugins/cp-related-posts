@@ -388,6 +388,10 @@ function cprp_related_post_form(){
         // Get cprp_tags
         $cprp_tags = get_post_meta( $post->ID, 'cprp_tags' );
         if( !empty( $cprp_tags ) ){
+			if( is_string( $cprp_tags ) )
+			{
+				$cprp_tags = unserialize( $cprp_tags );
+			}
             $cprp_tags = $cprp_tags[ 0 ];
             if( $post->post_status == 'auto-draft' && isset( $cprp_tags[ 'auto' ] ) && isset( $cprp_tags[ 'draft' ] ) ){
                 unset( $cprp_tags[ 'auto' ] );
@@ -425,7 +429,14 @@ function cprp_related_post_form(){
     <div id="cprp_manually_added"><div class="cprp-section-title"><?php _e( 'Items manually related, press "-" symbol to remove item', 'cprp-text' ); ?></div><div class="cprp-container"><ul>
     <?php
         $cprp_manually_related = get_post_meta( $post->ID, 'cprp_manually_related' );
-        if( !empty( $cprp_manually_related ) ) $cprp_manually_related = $cprp_manually_related[ 0 ];
+        if( !empty( $cprp_manually_related ) ) 
+		{
+			if( is_string( $cprp_manually_related ) )
+			{
+				$cprp_manually_related = unserialize( $cprp_manually_related );
+			}
+			$cprp_manually_related = $cprp_manually_related[ 0 ];
+		}	
         foreach( $cprp_manually_related as $post_id ){
             $tmp_post = get_post( $post_id );
             print '<li><span class="cprp-hndl" onclick="cprp_remove_manually(this);">-</span><input type="hidden" name="cprp_manually[]" value="'.$post_id. '" />'.$tmp_post->post_title.'</li>';
@@ -531,6 +542,10 @@ function cprp_content( $the_content ){
     if( $selection_type[ 'manually' ] ){
         $manually_related = get_post_meta( $post->ID, 'cprp_manually_related' );
         if( !empty( $manually_related ) ){
+			if( is_string( $manually_related ) )
+			{
+				$manually_related = unserialize( $manually_related );
+			}
             $manually_related = $manually_related[ 0 ];
             foreach ( $manually_related as $id ){
                 $r_post = get_post( $id );
@@ -544,8 +559,13 @@ function cprp_content( $the_content ){
     
     $tags_arr = get_post_meta( $post->ID, 'cprp_tags' );
     if( !empty( $tags_arr ) ){
+        if( is_string( $tags_arr ) )
+		{
+			$tags_arr = unserialize( $tags_arr );
+		}
+            
         $query = "";
-        
+		
         $tags_arr = $tags_arr[0];
         
         $s = array_sum( $tags_arr );
@@ -566,6 +586,11 @@ function cprp_content( $the_content ){
                 $c = 0;
                 
                 $post_tags  = unserialize( $result->meta_value );
+				if( is_string( $post_tags ) )
+				{
+					$post_tags  = unserialize( $post_tags );
+				}
+				
                 $t = array_sum( $post_tags );
                 $result->matching = array();
                 foreach ( $post_tags as $tag => $value) {
