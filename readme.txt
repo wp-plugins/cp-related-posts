@@ -89,6 +89,10 @@ Display options for the related posts on the individual post/page
 How to display related posts in multiple-posts pages
 
 * Display related posts in multiple-posts pages
+* Display only in homepage
+* Exclude the related posts from homepage
+* Display the related posts only in specific pages
+* Exclude the related posts from specific pages
 * Display featured images in related posts
 * Display percentage of similarity
 * Display excerpt of related posts
@@ -109,6 +113,7 @@ It is possible associate posts manually. Type the terms and press the "Search" b
 
 Note: The posts associated manually represent the most strong relation.
 
+It is possible exclude a post from the list of related posts, with only check the option: "Exclude this post from others related posts", or hide the related posts from a post through the option: "Hide the related posts from this post"
 
 == Frequently Asked Questions ==
 
@@ -131,6 +136,18 @@ A: You only should replace the images for icon_on and icon_off, located in "/wp-
 = Q: How to remove posts with little similarity? =
 
 A: You only should increase the similarity percentage, from the settings page of plugin.
+
+= Q: How can be hidden the related posts from the home page? =
+
+A: Go to the settings page of plugin and check the option "Exclude the related posts from homepage"
+
+= Q: How can hide the related posts from a page? = 
+
+A: Go to the page, and check the option "Hide the related posts from this post"
+
+= Q: How can hide some pages of the website from the related posts? = 
+
+A: Go to the page or post and check the option "Exclude this post from others related posts"
 
 == Screenshots ==
 01. CP Related Posts with slider layout

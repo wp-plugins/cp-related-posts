@@ -38,6 +38,12 @@ $cprp_default_settings = array(
     
     'display_in_multiple' => array(
         'activate'          => true,
+		'display_in'		=> array(
+						'type' => 'all', // possible values 'all', 'home', 'list'
+						'exclude_home' => false, // Exclude related posts from homepage, valid when type=all
+						'exclude_id' => array(), // Exclude related posts from pages or posts with ID, valid when type=all
+						'include_id' => array()  // Display related posts only on specific posts or pages, valid when type=list
+					   ),
         'show_thumbnail'    => true,
         'show_percentage'   => true,
         'show_excerpt'      => true,
@@ -168,6 +174,12 @@ function cprp_settings_page(){
     
             'display_in_multiple' => array(
                 'activate'          => false,
+				'display_in'		=> array(
+											'type' => 'all',
+											'exclude_home' => false,
+											'exclude_id' => array(),
+											'include_id' => array()
+									),
                 'show_thumbnail'    => false,
                 'show_percentage'   => false,
                 'show_excerpt'      => false,
@@ -185,6 +197,10 @@ function cprp_settings_page(){
         if( isset( $_REQUEST[ 'cprp_display_in_single_show_tags' ] ) )          $settings[ 'display_in_single' ][ 'show_tags' ] = true;
         
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_activate' ] ) )           $settings[ 'display_in_multiple' ][ 'activate' ] = true;
+        if( isset( $_REQUEST[ 'cprp_display_in_multiple_type' ] ) )           	$settings[ 'display_in_multiple' ][ 'display_in' ][ 'type' ] = $_REQUEST[ 'cprp_display_in_multiple_type' ];
+        if( isset( $_REQUEST[ 'cprp_display_in_multiple_exclude_home' ] ) )     $settings[ 'display_in_multiple' ][ 'display_in' ][ 'exclude_home' ] = true;
+        if( !empty( $_REQUEST[ 'cprp_display_in_multiple_exclude_id' ] ) )      $settings[ 'display_in_multiple' ][ 'display_in' ][ 'exclude_id' ] = explode( ',', str_replace( ' ', '', $_REQUEST[ 'cprp_display_in_multiple_exclude_id' ] ) );
+		if( !empty( $_REQUEST[ 'cprp_display_in_multiple_include_id' ] ) )      $settings[ 'display_in_multiple' ][ 'display_in' ][ 'include_id' ] = explode( ',', str_replace( ' ', '', $_REQUEST[ 'cprp_display_in_multiple_include_id' ] ) );		
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_show_thumbnail' ] ) )     $settings[ 'display_in_multiple' ][ 'show_thumbnail' ] = true;
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_show_percentage' ] ) )    $settings[ 'display_in_multiple' ][ 'show_percentage' ] = true;
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_show_excerpt' ] ) )       $settings[ 'display_in_multiple' ][ 'show_excerpt' ] = true;
@@ -256,7 +272,7 @@ function cprp_settings_page(){
 						</td>
                     </tr>
                 </table>
-                <div style="border: 1px solid #CCC;" >
+                <div style="border: 1px solid #CCC; padding: 10px;" >
                     <?php
                         $cprp_display_in_single = cprp_get_settings( 'display_in_single' );
                     ?>
@@ -273,7 +289,7 @@ function cprp_settings_page(){
                             </td>
                         </tr>
                         <tr valign="top">
-                            <th><?php _e( 'Display featured images in realted posts', 'cprp-text' ); ?></th>
+                            <th><?php _e( 'Display featured images in related posts', 'cprp-text' ); ?></th>
                             <td>
                                 <input type="checkbox" name="cprp_display_in_single_show_thumbnail" <?php if( isset( $cprp_display_in_single[ 'show_thumbnail' ] ) && $cprp_display_in_single[ 'show_thumbnail' ] ) echo 'CHECKED'; ?> />
                             </td>
@@ -311,7 +327,7 @@ function cprp_settings_page(){
                         </tr>
                     </table>
                 </div>
-                <div style="border: 1px solid #CCC;margin-top:10px;" >
+                <div style="border: 1px solid #CCC;margin-top:10px;padding:10px;" >
                     <?php
                         $cprp_display_in_multiple = cprp_get_settings( 'display_in_multiple' );
                     ?>
@@ -323,8 +339,40 @@ function cprp_settings_page(){
                         </tr>
                         <tr valign="top">
                             <th><?php _e( 'Display related posts in multiple-posts pages', 'cprp-text' ); ?></th>
-                            <td>
-                                <input type="checkbox" name="cprp_display_in_multiple_activate" <?php if( isset( $cprp_display_in_multiple[ 'activate' ] ) && $cprp_display_in_multiple[ 'activate' ] ) echo 'CHECKED'; ?> />
+                            <table style="width:100%;">
+									<tr>
+										<td style="vertical-align:top;">
+											<input type="checkbox" name="cprp_display_in_multiple_activate" <?php if( isset( $cprp_display_in_multiple[ 'activate' ] ) && $cprp_display_in_multiple[ 'activate' ] ) echo 'CHECKED'; ?> />
+										</td>
+										<td style="vertical-align:top;padding:0 10px;">	
+											<table>
+												<tr >
+													<td  style="vertical-align:top;border-bottom:1px solid #CCC;">
+														<input type="radio" name="cprp_display_in_multiple_type" value="all" <?php if( !isset( $cprp_display_in_multiple[ 'display_in' ][ 'type' ] ) || $cprp_display_in_multiple[ 'display_in' ][ 'type' ] == 'all' ) echo 'CHECKED'; ?> > Display in all Multiple-post pages
+													</td>
+													<td style="vertical-align:top;border-bottom:1px solid #CCC;">
+														<input type="checkbox" name="cprp_display_in_multiple_exclude_home" <?php if( isset( $cprp_display_in_multiple[ 'display_in' ][ 'exclude_home' ] ) && $cprp_display_in_multiple[ 'display_in' ][ 'exclude_home' ] ) echo 'CHECKED'; ?> > Exclude related posts from Homepage<br><br>
+														Exclude from posts and pages with IDs <input type="text" name="cprp_display_in_multiple_exclude_id" value="<?php echo ( ( isset( $cprp_display_in_multiple[ 'display_in' ][ 'exclude_id' ] ) ) ? implode( ',',  $cprp_display_in_multiple[ 'display_in' ][ 'exclude_id' ] ) : '' ); ?>"><br>(separated by comma ",")
+													</td>
+												</tr>
+												<tr>
+													<td colspan="2" style="vertical-align:top;border-bottom:1px solid #CCC;">
+														<input type="radio" name="cprp_display_in_multiple_type" value="home" <?php if( isset( $cprp_display_in_multiple[ 'display_in' ][ 'type' ] ) && $cprp_display_in_multiple[ 'display_in' ][ 'type' ] == 'home' ) echo 'CHECKED'; ?> > Display in Homepage only
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<input type="radio" name="cprp_display_in_multiple_type" value="list" <?php if( isset( $cprp_display_in_multiple[ 'display_in' ][ 'type' ] ) && $cprp_display_in_multiple[ 'display_in' ][ 'type' ] == 'list' ) echo 'CHECKED'; ?> > Display in the following posts and pages
+													</td>
+													<td>
+														Enter the IDs of posts and pages <input type="text" name="cprp_display_in_multiple_include_id" value="<?php echo ( ( isset( $cprp_display_in_multiple[ 'display_in' ][ 'include_id' ] ) ) ? implode( ',',  $cprp_display_in_multiple[ 'display_in' ][ 'include_id' ] ) : '' ); ?>" ><br>(separated by comma ",")
+													</td>
+												</tr>
+												
+											</table>
+										</td>
+									</tr>
+								</table>	
                             </td>
                         </tr>
                         <tr valign="top">
@@ -385,7 +433,10 @@ function cprp_related_post_form(){
     
     
     if ( isset( $post  ) ){
-        // Get cprp_tags
+        $cprp_exclude_from_posts = get_post_meta( $post->ID, 'cprp_exclude_from_posts', true );
+        $cprp_hide_related_posts = get_post_meta( $post->ID, 'cprp_hide_related_posts', true );
+		
+		// Get cprp_tags
         $cprp_tags = get_post_meta( $post->ID, 'cprp_tags' );
         if( !empty( $cprp_tags ) ){
 			if( is_string( $cprp_tags ) )
@@ -408,7 +459,10 @@ function cprp_related_post_form(){
 	<?php _e('If you want test the premium version of CP Related Posts go to the following links:<br/> <a href="http://demos.net-factor.com/related-posts/wp-login.php" target="_blank">Administration area: Click to access the administration area demo</a><br/> <a href="http://demos.net-factor.com/related-posts/" target="_blank">Public page: Click to access the CP Related Posts</a>'); ?><br/><br />
 	<?php _e('To get the premium version of CP Related Posts go to the following links:<br/> <a href="http://wordpress.dwbooster.com/content-tools/related-posts#download" target="_blank">CLICK HERE</a>'); ?>
 	</p>
-	
+	<p>
+	 <input type="checkbox" name="cprp_exclude_from_posts" <?php echo ( ( !empty( $cprp_exclude_from_posts ) ) ? 'CHECKED' : '' ); ?> /> <?php _e( 'Exclude this post from others related posts' ); ?><br />
+	 <input type="checkbox" name="cprp_hide_related_posts" <?php echo ( ( !empty( $cprp_hide_related_posts ) ) ? 'CHECKED' : '' ); ?> /> <?php _e( 'Hide the related posts from this post' ); ?>
+	</p>
     <p><?php _e( 'After complete the post writing, press the "Get recommended tags" button to get a list of possible tags determined by content, and select the most relevant tags', 'cprp-text' ); ?></p>
     <div><input type="button" value="Get recommended tags" onclick="cprp_get_tags(<?php print $post->ID; ?>);" /></div>
     <div style="width:100%; height:150px; overflow: auto; border: 1px solid #CCC;" id="cprp_tags">
@@ -473,6 +527,23 @@ function cprp_save( $id ){
     if( isset( $_REQUEST[ 'cprp_manually' ] ) ){
         update_post_meta( $id, 'cprp_manually_related', $_REQUEST[ 'cprp_manually' ] );
     }
+	
+	if( isset( $_REQUEST[ 'cprp_exclude_from_posts' ] ) ){
+        update_post_meta( $id, 'cprp_exclude_from_posts', 1 );
+    }
+	else
+	{
+		delete_post_meta( $id, 'cprp_exclude_from_posts' );
+	}
+	
+	if( isset( $_REQUEST[ 'cprp_hide_related_posts' ] ) ){
+        update_post_meta( $id, 'cprp_hide_related_posts', 1 );
+    }
+	else
+	{
+		delete_post_meta( $id, 'cprp_hide_related_posts' );
+	}
+	
 } // End cprp_save
 
 add_action('admin_enqueue_scripts', 'cprp_load_admin_resources', 1);
@@ -517,6 +588,53 @@ function cprp_enqueue_scripts(){
 } // End cprp_enqueue_scripts
 
 add_filter( 'the_content', 'cprp_content' );
+
+function cprp_display( $page )
+{
+	global $post;
+	
+	if( $page == 'single' )
+	{
+		$display = cprp_get_settings( 'display_in_single' );
+		if( !$display[ 'activate' ] ) return false;
+		$cprp_hide_related_posts = get_post_meta( $post->ID, 'cprp_hide_related_posts' );
+		if( !empty( $cprp_hide_related_posts ) ) return false;
+	}
+	else
+	{
+		$display = cprp_get_settings( 'display_in_multiple' );
+		if( !empty( $display[ 'display_in' ] ) )
+		{
+			if( $display[ 'display_in' ][ 'type' ] == 'home' && !( is_home() || is_front_page() ) ) return false;
+			if( 
+				$display[ 'display_in' ][ 'type' ] == 'list' && 
+				( 
+					empty( $display[ 'display_in' ][ 'include_id' ] ) ||
+					(
+						!is_category( $display[ 'display_in' ][ 'include_id' ] ) &&
+						!is_tag( $display[ 'display_in' ][ 'include_id' ] )
+					)
+				)	
+			) return false;
+			if( 
+				$display[ 'display_in' ][ 'type' ] == 'all' && 
+				(
+					( $display[ 'display_in' ][ 'exclude_home' ] && ( is_home() || is_front_page() ) ) || 
+					(
+						!empty( $display[ 'display_in' ][ 'exclude_id' ] ) &&
+						( 
+							is_category( $display[ 'display_in' ][ 'exclude_id' ] ) ||
+							is_tag( $display[ 'display_in' ][ 'exclude_id' ] )
+						)	
+					)	
+				)	
+			) return false;
+		}
+	}
+	
+	return true;
+}
+
 function cprp_content( $the_content ){
     global $post, $wpdb;
     
@@ -525,12 +643,16 @@ function cprp_content( $the_content ){
     
     // Checks if the element is displayed on single or multiple page, and if the related posts are activated for it
     if( is_singular() ){
+		
         $display = cprp_get_settings( 'display_in_single' );
+		if( !cprp_display( 'single' ) ) return $the_content;
+		
     }else{
-        $display = cprp_get_settings( 'display_in_multiple' );
+		$display = cprp_get_settings( 'display_in_multiple' );
+        if( !cprp_display( 'multiple' ) ) return $the_content;
+		
     }
-
-    if( !$display[ 'activate' ]) return $the_content;
+    
     $mode = $display[ 'mode' ];    
     
     $selection_type = cprp_get_settings( 'selection_type' );
@@ -549,7 +671,8 @@ function cprp_content( $the_content ){
             $manually_related = $manually_related[ 0 ];
             foreach ( $manually_related as $id ){
                 $r_post = get_post( $id );
-                if( $r_post ) {
+                $cprp_exclude_from_posts = get_post_meta( $id, 'cprp_exclude_from_posts' );
+                if( $r_post && empty( $cprp_exclude_from_posts ) ) {
                     $r_post->percentage = 100;
                     $related_posts[] = $r_post;
                 }
@@ -571,7 +694,7 @@ function cprp_content( $the_content ){
         $s = array_sum( $tags_arr );
         
         $tags = array_keys( $tags_arr );
-        $query = "SELECT posts.*, postmeta.meta_value FROM ".$wpdb->prefix."posts as posts, ".$wpdb->prefix."postmeta as postmeta WHERE posts.post_status='publish' AND posts.ID = postmeta.post_id AND posts.ID <> ".$post->ID." AND postmeta.meta_key = 'cprp_tags' AND (postmeta.meta_value LIKE '%".implode( "%' OR postmeta.meta_value LIKE '%", $tags )."%')";
+        $query = "SELECT posts.*, postmeta.meta_value FROM $wpdb->posts as posts, $wpdb->postmeta as postmeta WHERE posts.post_status='publish' AND posts.ID = postmeta.post_id AND posts.ID <> ".$post->ID." AND postmeta.meta_key = 'cprp_tags' AND (postmeta.meta_value LIKE '%".implode( "%' OR postmeta.meta_value LIKE '%", $tags )."%') AND postmeta.post_id NOT IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cprp_exclude_from_posts')";
         $results = $wpdb->get_results( $query );
         
         if( count( $results ) ){
