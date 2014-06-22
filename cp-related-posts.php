@@ -695,7 +695,7 @@ function cprp_content( $the_content ){
         $s = array_sum( $tags_arr );
         
         $tags = array_keys( $tags_arr );
-        $query = "SELECT posts.*, postmeta.meta_value FROM $wpdb->posts as posts, $wpdb->postmeta as postmeta WHERE posts.post_status='publish' AND posts.ID = postmeta.post_id AND posts.ID <> ".$post->ID." AND postmeta.meta_key = 'cprp_tags' AND (postmeta.meta_value LIKE '%".implode( "%' OR postmeta.meta_value LIKE '%", $tags )."%') AND postmeta.post_id NOT IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cprp_exclude_from_posts')";
+        $query = "SELECT posts.*, postmeta.meta_value FROM $wpdb->posts as posts, $wpdb->postmeta as postmeta WHERE posts.post_type IN ('".implode( "','", cprp_get_settings( 'post_type' ) )."') AND posts.post_status='publish' AND posts.ID = postmeta.post_id AND posts.ID <> ".$post->ID." AND postmeta.meta_key = 'cprp_tags' AND (postmeta.meta_value LIKE '%".implode( "%' OR postmeta.meta_value LIKE '%", $tags )."%') AND postmeta.post_id NOT IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cprp_exclude_from_posts')";
         $results = $wpdb->get_results( $query );
         
         if( count( $results ) ){
