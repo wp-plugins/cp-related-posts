@@ -603,6 +603,7 @@ function cprp_display( $page )
 	else
 	{
 		$display = cprp_get_settings( 'display_in_multiple' );
+		if( !$display[ 'activate' ] ) return false;
 		if( !empty( $display[ 'display_in' ] ) )
 		{
 			if( $display[ 'display_in' ][ 'type' ] == 'home' && !( is_home() || is_front_page() ) ) return false;
