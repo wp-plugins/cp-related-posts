@@ -2,6 +2,7 @@
 .cprp_items{ display: none; }
 .cprp_thumbnail { width: 25%; margin: 5px 10px 5px 0; float: left; }
 .cprp_excerpt{ line-height:1.4em; }
+.cprp_excerpt p{margin-top:0;}
 .cprp_tags {     
 	text-overflow: ellipsis;
     overflow: hidden;

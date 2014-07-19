@@ -24,5 +24,7 @@
                 me.html( s );
             }
         );
+        $( '.cprp_excerpt_content br' ).remove();
+        $( '.cprp_thumbnail' ).removeAttr( 'width' ).removeAttr( 'height' );
     });
 } )();
