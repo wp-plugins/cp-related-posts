@@ -527,7 +527,11 @@ function cprp_save( $id ){
     if( isset( $_REQUEST[ 'cprp_manually' ] ) ){
         update_post_meta( $id, 'cprp_manually_related', $_REQUEST[ 'cprp_manually' ] );
     }
-	
+	else
+    {
+        delete_post_meta( $id, 'cprp_manually_related', $_REQUEST[ 'cprp_manually' ] );
+    }
+    
 	if( isset( $_REQUEST[ 'cprp_exclude_from_posts' ] ) ){
         update_post_meta( $id, 'cprp_exclude_from_posts', 1 );
     }
