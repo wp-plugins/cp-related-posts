@@ -156,3 +156,19 @@ A: Go to the page or post and check the option "Exclude this post from others re
 04. CP Related Posts with list layout
 05. Relating posts
 06. Settings page
+
+== Changelog ==
+
+= 1.0 =
+
+* First version released.
+
+= 1.0.1 =
+
+* Improves the plugin documentation.
+* Corrects a compatibility issue with the JetPack plugin.
+* Includes new features to exclude or include, related posts from specific pages or posts.
+* Corrects an issue with pages of multiple entries.
+* Improves the selection of related posts and pages.
+* Removes some extra tags inserted by other plugins in the excerpts of the posts and pages.
+* Allows remove all posts related manually.
