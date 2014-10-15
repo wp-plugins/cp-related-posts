@@ -13,6 +13,8 @@
  }
 
 /*** LIST STYLE ***/
+.cprp_items.cprp-widget ul ,
 .cprp_items.list ul { margin: 0; padding: 0; list-style-type: none; }
+.cprp_items.cprp-widget li,
 .cprp_items.list li { clear: both; margin-bottom:15px; }
 .cprp_items.list .cprp_tags { background: #EFEFEF; padding: 5px; }

@@ -53,9 +53,10 @@ $cprp_default_settings = array(
     
 );
 
-add_action( 'init', 'cprp_init' );
+add_action( 'init', 'cprp_init', 1 );
 function cprp_init(){
     load_plugin_textdomain( 'cprp-text', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );	
+    add_action( 'widgets_init', 'cprp_load_widgets' );
 } // End cprp_init    
 
 add_action('admin_init', 'cprp_admin_init');
@@ -593,14 +594,14 @@ function cprp_enqueue_scripts(){
 
 add_filter( 'the_content', 'cprp_content' );
 
-function cprp_display( $page )
+function cprp_display( $page, $is_widget = false )
 {
 	global $post;
 	
 	if( $page == 'single' )
 	{
 		$display = cprp_get_settings( 'display_in_single' );
-		if( !$display[ 'activate' ] ) return false;
+		if( !$display[ 'activate' ] && !$is_widget ) return false;
 		$cprp_hide_related_posts = get_post_meta( $post->ID, 'cprp_hide_related_posts' );
 		if( !empty( $cprp_hide_related_posts ) ) return false;
 	}
@@ -640,30 +641,32 @@ function cprp_display( $page )
 	return true;
 }
 
-function cprp_content( $the_content ){
+
+function _cprp_content( $the_content, $mode = '' ){
     global $post, $wpdb;
     
+    $str = '';
+    $related_posts = array();
+    $manually_related = array();
+    
     // Checks if the post_type is valid
-    if( !in_array( $post->post_type, cprp_get_settings( 'post_type' ) ) ) return $the_content;
+    if( !in_array( $post->post_type, cprp_get_settings( 'post_type' ) ) ) return $str;
     
     // Checks if the element is displayed on single or multiple page, and if the related posts are activated for it
     if( is_singular() ){
 		
         $display = cprp_get_settings( 'display_in_single' );
-		if( !cprp_display( 'single' ) ) return $the_content;
+		if( !cprp_display( 'single', strlen( $mode ) > 0 ) ) return $str;
 		
     }else{
 		$display = cprp_get_settings( 'display_in_multiple' );
-        if( !cprp_display( 'multiple' ) ) return $the_content;
+        if( !cprp_display( 'multiple' ) ) return $str;
 		
     }
     
-    $mode = $display[ 'mode' ];    
+    $mode = ( strlen( $mode ) ) ? $mode : $display[ 'mode' ];
     
     $selection_type = cprp_get_settings( 'selection_type' );
-    
-    $related_posts = array();
-    $manually_related = array();
     
     // Get posts related manually to the current post
     if( $selection_type[ 'manually' ] ){
@@ -742,7 +745,7 @@ function cprp_content( $the_content ){
     
     if( count( $related_posts ) ){
         $h = min( count( $related_posts ), cprp_get_settings( 'number_of_posts' ) ); 
-        $str = '<h2>'.__( 'Related Posts', 'cprp-text' ).'</h2><div class="cprp_items '.$mode.'"><ul>';
+        $str .= '<div class="cprp_items '.$mode.'"><ul>';
     
         for( $i = 0; $i < $h; $i++ ){
             $str .= '<li>';
@@ -782,9 +785,17 @@ function cprp_content( $the_content ){
         }
         
         $str .= '</ul></div>';
-        $the_content .= $str;
     }        
     
+    return $str;
+} // End _cprp_content
+
+function cprp_content( $the_content ){
+    $str = _cprp_content( $the_content );
+    if( strlen( $str ) ){
+        $str = '<h2>'.__( 'Related Posts', 'cprp-text' ).'</h2>'.$str;
+		$the_content .= $str;
+    }        
     return $the_content;
 } // End cprp_content
 
@@ -852,4 +863,61 @@ function cprp_site_url(){
                     "/"
                 )."/";
 }
+
+// ************************************** CREATE WIDGETS *********************************************/ 
+
+function cprp_load_widgets(){
+    register_widget( 'CPRPWidget' );
+}
+        
+/**
+ * CPRPWidget Class
+ */
+class CPRPWidget extends WP_Widget {
+    
+    /** constructor */
+    function CPRPWidget() {
+        parent::WP_Widget(false, $name = 'CP Related Posts');	
+    }
+
+    function widget($args, $instance) {		
+        extract( $args );
+        $title = apply_filters('widget_title', $instance['title']);
+        if( is_singular() )
+        {
+            global $post;
+            $str = _cprp_content( $post->post_content, 'cprp-widget' );
+            if( strlen( $str ) )
+            {
+                echo $before_widget;
+                if ( $title ) echo $before_title . $title . $after_title; 
+                echo $str;
+                echo $after_widget;
+            }    
+        }
+        //echo $GLOBALS['music_store']->load_product_list($atts);
+    }
+
+    function update($new_instance, $old_instance) {				
+        $instance = $old_instance;
+
+		/* Strip tags (if needed) and update the widget settings. */
+		$instance['title'] = strip_tags( $new_instance['title'] );
+		return $instance;
+    }
+
+    function form( $instance ) {
+    
+        /* Set up some default widget settings. */
+		$defaults = array( 'title' => '' );
+		$instance = wp_parse_args( (array) $instance, $defaults ); 
+        
+        $title      = $instance[ 'title' ];
+        ?>
+            <p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?> <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" /></label></p>
+        <?php 
+    }
+
+} // class CPRPWidget
+        
 ?>
