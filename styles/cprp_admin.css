@@ -1,7 +1,7 @@
 #cprp_found,
 #cprp_manually_added{
     width: 48%;
-    height:150px; 
+    height:270px; 
     overflow: auto; 
     border: 1px solid #CCC;
     margin-top: 10px;
@@ -47,4 +47,4 @@
     height:20px;
 }
 
-.cprp-container{ height:120px; overflow:auto; }
+.cprp-container{ height:240px; overflow:auto; }

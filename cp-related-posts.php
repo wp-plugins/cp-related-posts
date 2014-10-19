@@ -13,8 +13,8 @@ include dirname( __FILE__ ).'/includes/tools.clss.php';
 // Default values
 
 $cprp_default_settings = array(
+    'title' => 'Related Posts',
     'number_of_posts'   => 5,
-    
     'post_type'         => array( 'page', 'post' ),
 	
     'percentage_symbol'	=> 'star',
@@ -155,6 +155,7 @@ function cprp_settings_page(){
 <?php	
     if (isset($_POST['cprp_settings']) && wp_verify_nonce( $_POST['cprp_settings'], plugin_basename( __FILE__ ) ) ){
         $settings = array(
+            'title' => '',
             'number_of_posts' => 0,
 			'similarity' 	  => 30,
             'post_type' => array( 'post', 'page' ),
@@ -188,7 +189,7 @@ function cprp_settings_page(){
                 'mode'              => 'list'
             )
         );
-        
+        if( isset( $_REQUEST[ 'cprp_title' ] ) ) $settings[ 'title' ] = $_REQUEST[ 'cprp_title' ];
 		if( is_int( trim( $_REQUEST[ 'cprp_number_of_posts' ] ) *1 ) ) $settings[ 'number_of_posts' ] = trim( $_REQUEST[ 'cprp_number_of_posts' ] );
         if( is_int( trim( $_REQUEST[ 'cprp_similarity' ] ) *1 ) ) $settings[ 'similarity' ] = trim( $_REQUEST[ 'cprp_similarity' ] );
         if( isset( $_REQUEST[ 'cprp_display_in_single_activate' ] ) )           $settings[ 'display_in_single' ][ 'activate' ] = true;
@@ -222,6 +223,14 @@ function cprp_settings_page(){
             <h3 class='hndle' style="padding:5px;"><span><?php _e( 'Related Posts Settings', 'cprp-text' ); ?></span></h3>
             <div class="inside">
                 <table class="form-table">
+                    <tr valign="top">
+                        <th><?php _e( 'Section title', 'cprp-text' ); ?></th>
+                        <td>
+                            <input type="text" name="cprp_title" value="<?php echo esc_attr( cprp_get_settings( 'title' ) ); ?>" style="width:150px;" />
+                            <em><?php _e( 'The title of the related posts section', 'cprp-text' ); ?></em>
+                        </td>
+                    </tr>
+                    
                     <tr valign="top">
                         <th><?php _e( 'Number of related posts', 'cprp-text' ); ?></th>
                         <td>
@@ -793,7 +802,7 @@ function _cprp_content( $the_content, $mode = '' ){
 function cprp_content( $the_content ){
     $str = _cprp_content( $the_content );
     if( strlen( $str ) ){
-        $str = '<h2>'.__( 'Related Posts', 'cprp-text' ).'</h2>'.$str;
+        $str = '<h2>'.__( cprp_get_settings( 'title' ), 'cprp-text' ).'</h2>'.$str;
 		$the_content .= $str;
     }        
     return $the_content;
