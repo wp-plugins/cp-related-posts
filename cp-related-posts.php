@@ -904,7 +904,6 @@ class CPRPWidget extends WP_Widget {
                 echo $after_widget;
             }    
         }
-        //echo $GLOBALS['music_store']->load_product_list($atts);
     }
 
     function update($new_instance, $old_instance) {				
