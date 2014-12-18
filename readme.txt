@@ -3,7 +3,7 @@ Contributors: codepeople
 Donate link: http://wordpress.dwbooster.com/content-tools/related-posts
 Tags: post,posts,page,pages,custom post type,related,terms,manual,tags,tags weight,related posts, related pages, associate page, associate post, similarity between content, similarity,shortcode,admin,image,images,plugin,sidebar,widget,rating
 Requires at least: 3.0.5
-Tested up to: 4.0
+Tested up to: 4.1
 Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
