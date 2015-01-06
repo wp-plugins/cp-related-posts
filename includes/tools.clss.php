@@ -7,6 +7,7 @@ class CPTagsExtractor {
     var $charset, $lang, $stop_words, $range = 0.3;    
     
     function __construct(){
+        $this->stop_words = array();
         $this->charset = get_option( 'blog_charset' );
         $this->lang = substr( get_bloginfo( 'language' ), 0, 2 );
         
