@@ -4,7 +4,7 @@ Donate link: http://wordpress.dwbooster.com/content-tools/related-posts
 Tags: post,posts,page,pages,custom post type,related,terms,manual,tags,tags weight,related posts, related pages, associate page, associate post, similarity between content, similarity,shortcode,admin,image,images,plugin,sidebar,widget,rating
 Requires at least: 3.0.5
 Tested up to: 4.1
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -172,3 +172,15 @@ A: Go to the page or post and check the option "Exclude this post from others re
 * Improves the selection of related posts and pages.
 * Removes some extra tags inserted by other plugins in the excerpts of the posts and pages.
 * Allows remove all posts related manually.
+
+= 1.0.2 =
+
+* Corrects an issue with the words to be excluded from the tags, in those languages where are not defined the lists of words.
+* Corrects an issue when have not extracted the tags from the posts/pages.
+
+== Upgrade Notice ==
+
+= 1.0.2 =
+* Improved plugin features
+
+Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
