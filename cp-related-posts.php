@@ -2,7 +2,7 @@
 /*  
 Plugin Name: CP Related Posts
 Plugin URI: http://wordpress.dwbooster.com/content-tools/related-posts
-Version: 1.0.3
+Version: 1.0.4
 Author: codepeople
 Description: CP Related Posts is a plugin that displays related articles on your website, manually, or by the terms in the content, title or abstract, including the tags assigned to the articles.
 */
@@ -531,8 +531,11 @@ function cprp_save( $id ){
     
     if( isset( $_REQUEST[ 'cprp_tag' ] ) ){
         $cprp_tag = $_REQUEST[ 'cprp_tag' ];
-        wp_set_post_terms( $id, $_REQUEST[ 'cprp_tag' ], 'post_tag', true);
-    }
+		wp_set_object_terms( $id, $_REQUEST[ 'cprp_tag' ], 'post_tag', true);
+    }elseif( !is_object_in_taxonomy( $post->post_type , 'post_tag' ) )
+	{
+		wp_delete_object_term_relationships( $id, 'post_tag' );
+	}
     
     if( isset( $_REQUEST[ 'cprp_manually' ] ) ){
         update_post_meta( $id, 'cprp_manually_related', $_REQUEST[ 'cprp_manually' ] );
@@ -571,7 +574,7 @@ function cprp_load_admin_resources(){
         wp_enqueue_script ( 'jquery' );
         wp_enqueue_script ( 'jquery-ui-sortable' );
         wp_enqueue_script ( 'cprp_admin_script', $plugin_dir_url.'scripts/cprp_admin.js', array( 'jquery', 'jquery-ui-sortable' ), false, true );
-        wp_localize_script('cprp_admin_script', 'cprp', array( 'admin_url' => cprp_site_url().'wp-admin/' ) );
+        wp_localize_script('cprp_admin_script', 'cprp', array( 'admin_url' => trim( get_admin_url( get_current_blog_id() ), '/' ).'/' ) );
     }    
 } // End cprp_load_admin_resources
 
@@ -711,7 +714,9 @@ function _cprp_content( $the_content, $mode = '' ){
         $s = array_sum( $tags_arr );
         
         $tags = array_keys( $tags_arr );
-        $query = "SELECT posts.*, postmeta.meta_value FROM $wpdb->posts as posts, $wpdb->postmeta as postmeta WHERE posts.post_type IN ('".implode( "','", cprp_get_settings( 'post_type' ) )."') AND posts.post_status='publish' AND posts.ID = postmeta.post_id AND posts.ID <> ".$post->ID." AND postmeta.meta_key = 'cprp_tags' AND (postmeta.meta_value LIKE '%".implode( "%' OR postmeta.meta_value LIKE '%", $tags )."%') AND postmeta.post_id NOT IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cprp_exclude_from_posts')";
+        $query = "SELECT posts.*, postmeta.meta_value FROM $wpdb->posts as posts, $wpdb->postmeta as postmeta WHERE posts.post_type IN ('".implode( "','", cprp_get_settings( 'post_type' ) )."') AND posts.post_status='publish' AND posts.ID = postmeta.post_id AND posts.ID <> ".$post->ID." AND postmeta.meta_key = 'cprp_tags'"
+		.( ( cprp_get_settings( 'similarity' ) ) ? " AND (postmeta.meta_value LIKE '%".implode( "%' OR postmeta.meta_value LIKE '%", $tags )."%')" : "" )
+		." AND postmeta.post_id NOT IN ( SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cprp_exclude_from_posts')";
         $results = $wpdb->get_results( $query );
         
         if( count( $results ) ){
@@ -860,7 +865,7 @@ function cprp_process_post( $post, $include_user_tags = true ){
 */
 function cprp_shutdown(){
     global $last_processed;
-    print "<script>document.location='".cprp_site_url()."wp-admin/?cprp-action=extract-all&id=".$last_processed."';</script>";
+	print "<script>document.location='".trim( get_admin_url( get_current_blog_id() ), "/" )."/?cprp-action=extract-all&id=".$last_processed."';</script>";
 }
 
 function cprp_site_url(){

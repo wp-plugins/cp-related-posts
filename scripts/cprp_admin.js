@@ -6,10 +6,9 @@
                     c = $( '[name="content"]' ),
                     text = ( ( t.length ) ? t.val() + ' ' : '' ) + ( ( c.length ) ? c.val() : '' ) ;
                     
-                $.getJSON( 
-                    cprp[ 'admin_url' ],
+                $.post( 
+                    cprp[ 'admin_url' ]+'?cprp-action=extract-tags',
                     {
-                        'cprp-action'   : 'extract-tags',
                         'text'          : text,
                         'id'            : id
                     }, 
@@ -28,7 +27,8 @@
                         
                         $( '#cprp_tags' ).html( str );
                         
-                    } 
+                    },
+					'json'
                 );
             }    
         };

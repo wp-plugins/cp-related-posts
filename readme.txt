@@ -4,7 +4,7 @@ Donate link: http://wordpress.dwbooster.com/content-tools/related-posts
 Tags: post,posts,page,pages,custom post type,related,terms,manual,tags,tags weight,related posts, related pages, associate page, associate post, similarity between content, similarity,shortcode,admin,image,images,plugin,sidebar,widget,rating
 Requires at least: 3.0.5
 Tested up to: 4.1
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -182,7 +182,20 @@ A: Go to the page or post and check the option "Exclude this post from others re
 
 * Modifies the way that posts are selected manually.
 
+= 1.0.4 =
+
+* Prevents conflicts with other plugins that define the same classes.
+* Allows disassociate selected tags from pages.
+* Allows to define the similarity as zero.
+* Improves some styles applied to the related posts.
+
+
 == Upgrade Notice ==
+
+= 1.0.4 =
+* Improved plugin features
+
+Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
 
 = 1.0.3 =
 * Improved plugin features

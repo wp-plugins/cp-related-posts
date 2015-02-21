@@ -17,7 +17,8 @@
     *
     * How easy is that?
     */
-
+if( !class_exists( 'PorterStemmer' ) )
+{
     class PorterStemmer
     {
         /**
@@ -407,4 +408,5 @@
                    AND $matches[1]{2} != 'y';
         }
     }
+}
 ?>
