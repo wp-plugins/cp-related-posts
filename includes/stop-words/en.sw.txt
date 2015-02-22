@@ -238,6 +238,7 @@ inward
 is
 isn't
 it
+it's
 itd
 it'll
 its
@@ -275,6 +276,7 @@ little
 look
 looking
 looks
+lot
 ltd
 m
 made

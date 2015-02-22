@@ -27,7 +27,7 @@ class CPTagsExtractor {
     }
     
     public function get_tags( $text ){
-        $text = trim( $text );
+        $text = strip_shortcodes( stripcslashes( trim( $text ) ) );
         $text = preg_replace( '/\d+/', ' ', $text );
         
         // Convert the text to UTF-8
