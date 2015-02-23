@@ -2,9 +2,8 @@
  * cp-related-posts.js
  */
 ( function() {
-//  jQuery( window ).load( function(){
-    jQuery( function(){
-		var $ = jQuery;
+    jQuery( window ).load( function(){
+    	var $ = jQuery;
 		$( '.cprp_items' ).show();
 		$( '.cprp_percentage' ).each(
             function(){
