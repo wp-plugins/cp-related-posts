@@ -2,7 +2,7 @@
 /*  
 Plugin Name: CP Related Posts
 Plugin URI: http://wordpress.dwbooster.com/content-tools/related-posts
-Version: 1.0.6
+Version: 1.0.7
 Author: codepeople
 Description: CP Related Posts is a plugin that displays related articles on your website, manually, or by the terms in the content, title or abstract, including the tags assigned to the articles.
 */
@@ -604,7 +604,7 @@ function cprp_enqueue_scripts(){
     wp_localize_script('cprp_script', 'cprp', array( 'star_on' => $plugin_dir_url.'images/'.$percentage_symbol.'_on.png', 'star_off' => $plugin_dir_url.'images/'.$percentage_symbol.'_off.png' ));
 } // End cprp_enqueue_scripts
 
-add_filter( 'the_content', 'cprp_content' );
+add_filter( 'the_content', 'cprp_content', 99 );
 
 function cprp_display( $page, $is_widget = false )
 {
@@ -798,7 +798,7 @@ function _cprp_content( $the_content, $mode = '' ){
             $str .= '</li>';
         }
         
-        $str .= '</ul></div>';
+        $str .= '</ul></div><div style="clear:both;"></div>';
     }        
     
     return $str;
