@@ -4,7 +4,7 @@ Donate link: http://wordpress.dwbooster.com/content-tools/related-posts
 Tags: post,posts,page,pages,custom post type,related,terms,manual,tags,tags weight,related posts, related pages, associate page, associate post, similarity between content, similarity,shortcode,admin,image,images,plugin,sidebar,widget,rating
 Requires at least: 3.0.5
 Tested up to: 4.2
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -203,35 +203,34 @@ A: Go to the page or post and check the option "Exclude this post from others re
 * Reduces the priority of the related posts insertion.
 * Inserts a DIV tag with clear:both at the end of related posts.
 
+= 1.0.8 =
+
+* Allows to select the size of images associated to the related posts.
+* Allows to enter the number of words to display as excerpts of related posts.
+
 == Upgrade Notice ==
+
+= 1.0.8 =
+* Allows to select the size of images associated to the related posts.
+* Allows to enter the number of words to display as excerpts of related posts.
+
+Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
 
 = 1.0.7 =
 * Reduces the priority of the related posts insertion.
 * Inserts a DIV tag with clear:both at the end of related posts.
 
-Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
-
 = 1.0.6 =
 * Improved plugin features
-
-Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
 
 = 1.0.5 =
 * Improved plugin features
 
-Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
-
 = 1.0.4 =
 * Improved plugin features
-
-Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
 
 = 1.0.3 =
 * Improved plugin features
 
-Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
-
 = 1.0.2 =
 * Improved plugin features
-
-Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support

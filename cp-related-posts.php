@@ -2,7 +2,7 @@
 /*  
 Plugin Name: CP Related Posts
 Plugin URI: http://wordpress.dwbooster.com/content-tools/related-posts
-Version: 1.0.7
+Version: 1.0.8
 Author: codepeople
 Description: CP Related Posts is a plugin that displays related articles on your website, manually, or by the terms in the content, title or abstract, including the tags assigned to the articles.
 */
@@ -30,8 +30,10 @@ $cprp_default_settings = array(
     'display_in_single' => array(
         'activate'          => true,
         'show_thumbnail'    => true,
+		'thumbnail_size'	=> 'thumbnail', 
         'show_percentage'   => true,
         'show_excerpt'      => true,
+		'excerpt_words'		=> 50,
         'show_tags'         => true,
         'mode'              => 'list' // slider, list, column
     ),
@@ -45,8 +47,10 @@ $cprp_default_settings = array(
 						'include_id' => array()  // Display related posts only on specific posts or pages, valid when type=list
 					   ),
         'show_thumbnail'    => true,
+		'thumbnail_size'	=> 'thumbnail',
         'show_percentage'   => true,
         'show_excerpt'      => true,
+		'excerpt_words'		=> 50,
         'show_tags'         => true,
         'mode'              => 'list' // slider, list, column
     )
@@ -168,8 +172,10 @@ function cprp_settings_page(){
             'display_in_single' => array(
                 'activate'          => false,
                 'show_thumbnail'    => false,
+				'thumbnail_size'	=> 'thumbnail',
                 'show_percentage'   => false,
                 'show_excerpt'      => false,
+				'excerpt_words'		=> 50,
                 'show_tags'         => false,
                 'mode'              => 'list'
             ),
@@ -183,8 +189,10 @@ function cprp_settings_page(){
 											'include_id' => array()
 									),
                 'show_thumbnail'    => false,
+				'thumbnail_size'	=> 'thumbnail',
                 'show_percentage'   => false,
                 'show_excerpt'      => false,
+				'excerpt_words'		=> 50,
                 'show_tags'         => false,
                 'mode'              => 'list'
             )
@@ -194,8 +202,10 @@ function cprp_settings_page(){
         if( is_int( trim( $_REQUEST[ 'cprp_similarity' ] ) *1 ) ) $settings[ 'similarity' ] = trim( $_REQUEST[ 'cprp_similarity' ] );
         if( isset( $_REQUEST[ 'cprp_display_in_single_activate' ] ) )           $settings[ 'display_in_single' ][ 'activate' ] = true;
         if( isset( $_REQUEST[ 'cprp_display_in_single_show_thumbnail' ] ) )     $settings[ 'display_in_single' ][ 'show_thumbnail' ] = true;
+		if( isset( $_REQUEST[ 'cprp_display_in_single_thumbnail_size' ] ) )     $settings[ 'display_in_single' ][ 'thumbnail_size' ] = $_REQUEST[ 'cprp_display_in_single_thumbnail_size' ];
         if( isset( $_REQUEST[ 'cprp_display_in_single_show_percentage' ] ) )    $settings[ 'display_in_single' ][ 'show_percentage' ] = true;
         if( isset( $_REQUEST[ 'cprp_display_in_single_show_excerpt' ] ) )       $settings[ 'display_in_single' ][ 'show_excerpt' ] = true;
+		if( isset( $_REQUEST[ 'cprp_display_in_single_excerpt_words' ] ) )       $settings[ 'display_in_single' ][ 'excerpt_words' ] = trim( $_REQUEST[ 'cprp_display_in_single_excerpt_words' ] );
         if( isset( $_REQUEST[ 'cprp_display_in_single_show_tags' ] ) )          $settings[ 'display_in_single' ][ 'show_tags' ] = true;
         
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_activate' ] ) )           $settings[ 'display_in_multiple' ][ 'activate' ] = true;
@@ -204,8 +214,10 @@ function cprp_settings_page(){
         if( !empty( $_REQUEST[ 'cprp_display_in_multiple_exclude_id' ] ) )      $settings[ 'display_in_multiple' ][ 'display_in' ][ 'exclude_id' ] = explode( ',', str_replace( ' ', '', $_REQUEST[ 'cprp_display_in_multiple_exclude_id' ] ) );
 		if( !empty( $_REQUEST[ 'cprp_display_in_multiple_include_id' ] ) )      $settings[ 'display_in_multiple' ][ 'display_in' ][ 'include_id' ] = explode( ',', str_replace( ' ', '', $_REQUEST[ 'cprp_display_in_multiple_include_id' ] ) );		
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_show_thumbnail' ] ) )     $settings[ 'display_in_multiple' ][ 'show_thumbnail' ] = true;
+		if( isset( $_REQUEST[ 'cprp_display_in_multiple_thumbnail_size' ] ) )     $settings[ 'display_in_multiple' ][ 'thumbnail_size' ] = $_REQUEST[ 'cprp_display_in_multiple_thumbnail_size' ];
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_show_percentage' ] ) )    $settings[ 'display_in_multiple' ][ 'show_percentage' ] = true;
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_show_excerpt' ] ) )       $settings[ 'display_in_multiple' ][ 'show_excerpt' ] = true;
+		if( isset( $_REQUEST[ 'cprp_display_in_multiple_excerpt_words' ] ) )       $settings[ 'display_in_multiple' ][ 'excerpt_words' ] = trim( $_REQUEST[ 'cprp_display_in_multiple_excerpt_words' ] );
         if( isset( $_REQUEST[ 'cprp_display_in_multiple_show_tags' ] ) )          $settings[ 'display_in_multiple' ][ 'show_tags' ] = true;
         
         update_option( 'cprp_settings', $settings );
@@ -305,6 +317,20 @@ function cprp_settings_page(){
                             </td>
                         </tr>
                         <tr valign="top">
+                            <th><?php _e( 'Size of featured images', 'cprp-text' ); ?></th>
+                            <td>
+								<select name="cprp_display_in_single_thumbnail_size">
+							<?php
+								$intermediate_image_sizes = get_intermediate_image_sizes();
+								foreach( $intermediate_image_sizes as $image_size)
+								{
+									echo '<option value="'.$image_size.'" '.( ( isset( $cprp_display_in_single[ 'thumbnail_size' ] ) && $cprp_display_in_single[ 'thumbnail_size' ] == $image_size ) ? 'SELECTED' : '' ).'>'.$image_size.'</option>';
+								}
+							?>	
+								</select>
+                            </td>
+                        </tr>
+                        <tr valign="top">
                             <th><?php _e( 'Display percentage of similarity', 'cprp-text' ); ?></th>
                             <td>
                                 <input type="checkbox" name="cprp_display_in_single_show_percentage" <?php if( isset( $cprp_display_in_single[ 'show_percentage' ] ) && $cprp_display_in_single[ 'show_percentage' ] ) echo 'CHECKED'; ?> />
@@ -314,6 +340,15 @@ function cprp_settings_page(){
                             <th><?php _e( 'Display excerpt of related posts', 'cprp-text' ); ?></th>
                             <td>
                                 <input type="checkbox" name="cprp_display_in_single_show_excerpt" <?php if( isset( $cprp_display_in_single[ 'show_excerpt' ] ) && $cprp_display_in_single[ 'show_excerpt' ] ) echo 'CHECKED'; ?> />
+                            </td>
+                        </tr>
+                        <tr valign="top">
+                            <th><?php _e( 'Number of words on posts excerpts', 'cprp-text' ); ?></th>
+                            <td>
+                                <input type="text" name="cprp_display_in_single_excerpt_words" value="<?php 
+									print( 
+										( isset( $cprp_display_in_single[ 'excerpt_words' ] ) ) ? $cprp_display_in_single[ 'excerpt_words' ] : 50 ); 
+								?>" />
                             </td>
                         </tr>
                         <tr valign="top">
@@ -349,7 +384,8 @@ function cprp_settings_page(){
                         </tr>
                         <tr valign="top">
                             <th><?php _e( 'Display related posts in multiple-posts pages', 'cprp-text' ); ?></th>
-                            <table style="width:100%;">
+							<td style="vertical-align:top;">
+								<table style="width:100%;">
 									<tr>
 										<td style="vertical-align:top;">
 											<input type="checkbox" name="cprp_display_in_multiple_activate" <?php if( isset( $cprp_display_in_multiple[ 'activate' ] ) && $cprp_display_in_multiple[ 'activate' ] ) echo 'CHECKED'; ?> />
@@ -386,9 +422,23 @@ function cprp_settings_page(){
                             </td>
                         </tr>
                         <tr valign="top">
-                            <th><?php _e( 'Display featured images in realted posts', 'cprp-text' ); ?></th>
+                            <th><?php _e( 'Display featured images in related posts', 'cprp-text' ); ?></th>
                             <td>
                                 <input type="checkbox" name="cprp_display_in_multiple_show_thumbnail" <?php if( isset( $cprp_display_in_multiple[ 'show_thumbnail' ] ) && $cprp_display_in_multiple[ 'show_thumbnail' ] ) echo 'CHECKED'; ?> />
+                            </td>
+                        </tr>
+						<tr valign="top">
+                            <th><?php _e( 'Size of featured images', 'cprp-text' ); ?></th>
+                            <td>
+								<select name="cprp_display_in_multiple_thumbnail_size">
+							<?php
+								$intermediate_image_sizes = get_intermediate_image_sizes();
+								foreach( $intermediate_image_sizes as $image_size)
+								{
+									echo '<option value="'.$image_size.'" '.( ( isset( $cprp_display_in_multiple[ 'thumbnail_size' ] ) && $cprp_display_in_multiple[ 'thumbnail_size' ] == $image_size ) ? 'SELECTED' : '' ).'>'.$image_size.'</option>';
+								}
+							?>	
+								</select>
                             </td>
                         </tr>
                         <tr valign="top">
@@ -401,6 +451,15 @@ function cprp_settings_page(){
                             <th><?php _e( 'Display excerpt of related posts', 'cprp-text' ); ?></th>
                             <td>
                                 <input type="checkbox" name="cprp_display_in_multiple_show_excerpt" <?php if( isset( $cprp_display_in_multiple[ 'show_excerpt' ] ) && $cprp_display_in_multiple[ 'show_excerpt' ] ) echo 'CHECKED'; ?> />
+                            </td>
+                        </tr>
+						<tr valign="top">
+                            <th><?php _e( 'Number of words on posts excerpts', 'cprp-text' ); ?></th>
+                            <td>
+                                <input type="text" name="cprp_display_in_multiple_excerpt_words" value="<?php 
+									print( 
+										( isset( $cprp_display_in_multiple[ 'excerpt_words' ] ) ) ? $cprp_display_in_multiple[ 'excerpt_words' ] : 50 ); 
+								?>" />
                             </td>
                         </tr>
                         <tr valign="top">
@@ -767,7 +826,7 @@ function _cprp_content( $the_content, $mode = '' ){
             $link = get_permalink( $related_posts[ $i ]->ID );
             
             if ( $display[ 'show_thumbnail' ] && has_post_thumbnail( $related_posts[ $i ]->ID ) ){
-                $image = wp_get_attachment_image_src( get_post_thumbnail_id(  $related_posts[ $i ]->ID  ), 'single-post-thumbnail' );
+				$image = wp_get_attachment_image_src( get_post_thumbnail_id(  $related_posts[ $i ]->ID  ), ( ( isset( $display ) && !empty( $display[ 'thumbnail_size' ] ) ) ? $display[ 'thumbnail_size' ] : 'thumbnail' ) );
                 $thumb = '<a href="'.$link.'"><img src="'.$image[ 0 ].'" class="cprp_thumbnail" /></a>';
             }
             
@@ -782,7 +841,7 @@ function _cprp_content( $the_content, $mode = '' ){
             
             if( $display[ 'show_excerpt' ] )
 			{
-                $str .= '<div class="cprp_excerpt">'.$thumb.'<span class="cprp_excerpt_content">'.wp_trim_words( strip_shortcodes( $related_posts[ $i ]->post_content ) ).'</span></div>';
+                $str .= '<div class="cprp_excerpt">'.$thumb.'<span class="cprp_excerpt_content">'.wp_trim_words( strip_shortcodes( $related_posts[ $i ]->post_content ), ( ( isset( $display[ 'excerpt_words' ] ) && is_numeric( $display[ 'excerpt_words' ] ) ) ? intval( $display[ 'excerpt_words' ] ) : 50 ) ).'</span></div>';
             }
             else
 			{
