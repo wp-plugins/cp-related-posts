@@ -137,6 +137,10 @@ A: You only should replace the images for icon_on and icon_off, located in "/wp-
 
 A: You only should increase the similarity percentage, from the settings page of plugin.
 
+= Q: How to vary the number of words in the excerpt of related posts? =
+
+A: Go to the settings page of the plugin and enter an integer number in the attributes: "Number of words on posts excerpts" for related posts on single pages, and pages with multiple entries. The integer number represent the maximum amount of words in the excerpts of posts (50 words is the number by default)
+
 = Q: How can be hidden the related posts from the home page? =
 
 A: Go to the settings page of plugin and check the option "Exclude the related posts from homepage"
