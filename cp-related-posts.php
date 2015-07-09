@@ -2,7 +2,7 @@
 /*  
 Plugin Name: CP Related Posts
 Plugin URI: http://wordpress.dwbooster.com/content-tools/related-posts
-Version: 1.0.8
+Version: 1.0.9
 Author: codepeople
 Description: CP Related Posts is a plugin that displays related articles on your website, manually, or by the terms in the content, title or abstract, including the tags assigned to the articles.
 */
@@ -827,21 +827,38 @@ function _cprp_content( $the_content, $mode = '' ){
             
             if ( $display[ 'show_thumbnail' ] && has_post_thumbnail( $related_posts[ $i ]->ID ) ){
 				$image = wp_get_attachment_image_src( get_post_thumbnail_id(  $related_posts[ $i ]->ID  ), ( ( isset( $display ) && !empty( $display[ 'thumbnail_size' ] ) ) ? $display[ 'thumbnail_size' ] : 'thumbnail' ) );
-                $thumb = '<a href="'.$link.'"><img src="'.$image[ 0 ].'" class="cprp_thumbnail" /></a>';
+                $thumb = apply_filters(
+							'cprp_post_thumbnail',
+							'<a href="'.$link.'"><img src="'.$image[ 0 ].'" class="cprp_thumbnail" /></a>',
+							$related_posts[ $i ]
+						);
             }
             
             $str .= '<div class="cprp_data">';
-            $str .= '<div class="cprp_title"><a href="'.$link.'">'.$related_posts[ $i ]->post_title.'</a></div>';
-            
+            $str .= apply_filters( 
+						'cprp_post_title', 
+						'<div class="cprp_title"><a href="'.$link.'">'.$related_posts[ $i ]->post_title.'</a></div>',
+						$related_posts[ $i ]
+					);
             
             if( $display[ 'show_percentage' ] )
 			{
-                $str .= '<div class="cprp_percentage">'.( $related_posts[ $i ]->percentage * 100 ).'</div>';
+                $str .= apply_filters(
+							'cprp_post_percentage',
+							'<div class="cprp_percentage">'.( $related_posts[ $i ]->percentage * 100 ).'</div>',
+							$related_posts[ $i ]
+						);
             }
             
             if( $display[ 'show_excerpt' ] )
 			{
-                $str .= '<div class="cprp_excerpt">'.$thumb.'<span class="cprp_excerpt_content">'.wp_trim_words( strip_shortcodes( $related_posts[ $i ]->post_content ), ( ( isset( $display[ 'excerpt_words' ] ) && is_numeric( $display[ 'excerpt_words' ] ) ) ? intval( $display[ 'excerpt_words' ] ) : 50 ) ).'</span></div>';
+                $str .= '<div class="cprp_excerpt">'.$thumb.'<span class="cprp_excerpt_content">'.
+				apply_filters(
+					'cprp_post_excerpt',
+					wp_trim_words( strip_shortcodes( $related_posts[ $i ]->post_content ), ( ( isset( $display[ 'excerpt_words' ] ) && is_numeric( $display[ 'excerpt_words' ] ) ) ? intval( $display[ 'excerpt_words' ] ) : 50 ) ),
+					$related_posts[ $i ]
+				)	
+				.'</span></div>';
             }
             else
 			{
@@ -850,7 +867,11 @@ function _cprp_content( $the_content, $mode = '' ){
 			
             if( $display[ 'show_tags' ] && !empty( $related_posts[ $i ]->matching ) )
 			{
-                $str .= '<div class="cprp_tags">Tags: '.implode( ', ', array_slice( $related_posts[ $i ]->matching, 0, 10 ) ).'</div>';
+                $str .=  apply_filters(
+							'cprp_post_tags',
+							'<div class="cprp_tags">Tags: '.implode( ', ', array_slice( $related_posts[ $i ]->matching, 0, 10 ) ).'</div>',
+							$related_posts[ $i ]
+						);
             }
             
             $str .= '</div>';
@@ -860,6 +881,12 @@ function _cprp_content( $the_content, $mode = '' ){
         $str .= '</ul></div><div style="clear:both;"></div>';
     }        
     
+    $str = apply_filters(
+				'cprp_content',
+				$str,
+				$related_posts
+			);
+			
     return $str;
 } // End _cprp_content
 

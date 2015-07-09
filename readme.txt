@@ -4,7 +4,7 @@ Donate link: http://wordpress.dwbooster.com/content-tools/related-posts
 Tags: post,posts,page,pages,custom post type,related,terms,manual,tags,tags weight,related posts, related pages, associate page, associate post, similarity between content, similarity,shortcode,admin,image,images,plugin,sidebar,widget,rating
 Requires at least: 3.0.5
 Tested up to: 4.2
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -115,6 +115,20 @@ Note: The posts associated manually represent the most strong relation.
 
 It is possible exclude a post from the list of related posts, with only check the option: "Exclude this post from others related posts", or hide the related posts from a post through the option: "Hide the related posts from this post"
 
+**Filters called by CP Related Posts**
+
+cprp_post_thumbnail: Requires two parameters, a link tag with the thumbnail, and the object with the post's data.
+
+cprp_post_title: Requires two parameters, a div tag with the post title, and the object with the post's data.
+
+cprp_post_percentage: Requires two parameters, a div tag with the percentage of similarity, and the object with the post's data.
+
+cprp_post_excerpt: Requires two parameters, the text of generated excerpt, and the object with the post's data.
+
+cprp_post_tags: Requires two parameters, a div tag with the tags assigned to the post, and the object with the post's data.
+
+cprp_content: Requires two parameters, the html tags of the generated related posts, and an array with the objects of related posts.
+
 == Frequently Asked Questions ==
 
 = Q: How to relate posts manually? =
@@ -212,13 +226,20 @@ A: Go to the page or post and check the option "Exclude this post from others re
 * Allows to select the size of images associated to the related posts.
 * Allows to enter the number of words to display as excerpts of related posts.
 
+= 1.0.9 =
+
+* Includes filters to allow modify  all sections of the related posts from other plugins, and the active theme on WordPress.
+
 == Upgrade Notice ==
+
+= 1.0.9 =
+* Includes filters to allow modify  all sections of the related posts from other plugins, and the active theme on WordPress.
+
+Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
 
 = 1.0.8 =
 * Allows to select the size of images associated to the related posts.
 * Allows to enter the number of words to display as excerpts of related posts.
-
-Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
 
 = 1.0.7 =
 * Reduces the priority of the related posts insertion.
