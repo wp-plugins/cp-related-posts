@@ -167,6 +167,10 @@ A: Go to the page, and check the option "Hide the related posts from this post"
 
 A: Go to the page or post and check the option "Exclude this post from others related posts"
 
+= Q: I want to select the a size of images to use for related posts =
+
+A: There are two options available in the settings page of the plugin (Size of featured images) for selecting the size of images to associate to the related posts, for single pages, and pages with multiple entries. WordPress includes three images sizes by default: thumbnail, medium, and large, but the themes, and plugins, can add new sizes for images, you simply should select the size of images to use in each case.
+
 == Screenshots ==
 01. CP Related Posts with slider layout
 02. CP Related Posts with column layout
