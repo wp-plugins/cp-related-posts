@@ -4,7 +4,7 @@ Donate link: http://wordpress.dwbooster.com/content-tools/related-posts
 Tags: post,posts,page,pages,custom post type,related,terms,manual,tags,tags weight,related posts, related pages, associate page, associate post, posts similarity,similarity,shortcode,admin,image,images,plugin,sidebar,widget,rating,filters,excerpt
 Requires at least: 3.0.5
 Tested up to: 4.3
-Stable tag: 1.0.9
+Stable tag: 1.0.10
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -234,32 +234,14 @@ A: There are two options available in the settings page of the plugin (Size of f
 
 * Includes filters to allow modify  all sections of the related posts from other plugins, and the active theme on WordPress.
 
+= 1.0.10 =
+
+* Corrects an issue in the Quick Edit of posts.
+
 == Upgrade Notice ==
 
-= 1.0.9 =
-* Includes filters to allow modify  all sections of the related posts from other plugins, and the active theme on WordPress.
+= 1.0.10 =
+
+* Corrects an issue in the Quick Edit of posts.
 
 Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
-
-= 1.0.8 =
-* Allows to select the size of images associated to the related posts.
-* Allows to enter the number of words to display as excerpts of related posts.
-
-= 1.0.7 =
-* Reduces the priority of the related posts insertion.
-* Inserts a DIV tag with clear:both at the end of related posts.
-
-= 1.0.6 =
-* Improved plugin features
-
-= 1.0.5 =
-* Improved plugin features
-
-= 1.0.4 =
-* Improved plugin features
-
-= 1.0.3 =
-* Improved plugin features
-
-= 1.0.2 =
-* Improved plugin features
