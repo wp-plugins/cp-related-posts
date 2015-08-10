@@ -2,7 +2,7 @@
 /*  
 Plugin Name: CP Related Posts
 Plugin URI: http://wordpress.dwbooster.com/content-tools/related-posts
-Version: 1.0.10
+Version: 1.0.11
 Author: codepeople
 Description: CP Related Posts is a plugin that displays related articles on your website, manually, or by the terms in the content, title or abstract, including the tags assigned to the articles.
 */
@@ -58,9 +58,9 @@ $cprp_default_settings = array(
 );
 
 add_action( 'init', 'cprp_init', 1 );
+add_action( 'widgets_init', 'cprp_load_widgets' );
 function cprp_init(){
     load_plugin_textdomain( 'cprp-text', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );	
-    add_action( 'widgets_init', 'cprp_load_widgets' );
 } // End cprp_init    
 
 add_action('admin_init', 'cprp_admin_init');
@@ -149,7 +149,7 @@ function cprp_admin_menu(){
 } // End cprp_admin_menu
 
 function cprp_settings_page(){
-    print "<h2>CP Related Posts Settings</h2>";
+    print "<h1>CP Related Posts Settings</h1>";
 ?>	
 	<p  style="border:1px solid #E6DB55;margin-bottom:10px;padding:5px;background-color: #FFFFE0;">
 	<?php _e('For any issues with the plugin, go to our <a href="http://wordpress.dwbooster.com/contact-us" target="_blank">contact page</a> and leave us a message.'); ?><br/><br />
@@ -523,6 +523,7 @@ function cprp_related_post_form(){
     }
 
 ?>
+	<input type="hidden" name="i_am_cprp" value="1" />
 	<p  style="border:1px solid #E6DB55;margin-bottom:10px;padding:5px;background-color: #FFFFE0;">
 	<?php _e('For any issues with the plugin, go to our <a href="http://wordpress.dwbooster.com/contact-us" target="_blank">contact page</a> and leave us a message.'); ?><br/><br />
 	<?php _e('If you want test the premium version of CP Related Posts go to the following links:<br/> <a href="http://demos.net-factor.com/related-posts/wp-login.php" target="_blank">Administration area: Click to access the administration area demo</a><br/> <a href="http://demos.net-factor.com/related-posts/" target="_blank">Public page: Click to access the CP Related Posts</a>'); ?><br/><br />
@@ -583,7 +584,7 @@ add_action( 'save_post', 'cprp_save' );
 function cprp_save( $id ){
     global $cprp_tags_obj;
     
-    if ( isset( $_POST[ '_inline_edit' ] )  || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) )
+    if ( isset( $_POST[ '_inline_edit' ] )  || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || empty( $_POST[ 'i_am_cprp' ] ) )
         return;
     
     $cprp_tags_obj = new CPTagsExtractor;
@@ -979,8 +980,8 @@ function cprp_load_widgets(){
 class CPRPWidget extends WP_Widget {
     
     /** constructor */
-    function CPRPWidget() {
-        parent::WP_Widget(false, $name = 'CP Related Posts');	
+    function __construct() {
+        parent::__construct(false, $name = 'CP Related Posts');	
     }
 
     function widget($args, $instance) {		

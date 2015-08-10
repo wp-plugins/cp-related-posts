@@ -4,7 +4,7 @@ Donate link: http://wordpress.dwbooster.com/content-tools/related-posts
 Tags: post,posts,page,pages,custom post type,related,terms,manual,tags,tags weight,related posts, related pages, associate page, associate post, posts similarity,similarity,shortcode,admin,image,images,plugin,sidebar,widget,rating,filters,excerpt
 Requires at least: 3.0.5
 Tested up to: 4.3
-Stable tag: 1.0.10
+Stable tag: 1.0.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -238,10 +238,18 @@ A: There are two options available in the settings page of the plugin (Size of f
 
 * Corrects an issue in the Quick Edit of posts.
 
+= 1.0.11 =
+
+* Adds a control variable for saving the information of related posts safely.
+* Uses the classes constructor of PHP5 on widgets.
+* Uses the <H1> tags in the titles of the settings pages.
+
 == Upgrade Notice ==
 
-= 1.0.10 =
+= 1.0.11 =
 
-* Corrects an issue in the Quick Edit of posts.
+* Adds a control variable for saving the information of related posts safely.
+* Uses the classes constructor of PHP5 on widgets.
+* Uses the <H1> tags in the titles of the settings pages.
 
 Important note: If you are using the Professional version don't update via the WP dashboard but using your personal update link. Contact us if you need further information: http://wordpress.dwbooster.com/support
